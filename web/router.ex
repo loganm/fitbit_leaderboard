@@ -19,6 +19,7 @@ defmodule FitbitLeaderboard.Router do
     get "/", PageController, :index
     get "/auth", AuthController, :index
     get "/auth/callback", AuthController, :callback
+    get "/fitbit/webhook", WebhookController, :index
     resources "/users", UserController
   end
 
