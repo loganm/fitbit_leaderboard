@@ -11,14 +11,17 @@ defmodule FitbitLeaderboard.AuthController do
     client = Fitbit.get_token!(code: code)
     IO.inspect client
 
+    user_id = client.token.other_params["user_id"]
+
     changeset = User.changeset(%User{},
-      %{user_id: client.token.other_params["user_id"],
+      %{user_id: user_id,
         access_token: client.token.access_token,
         refresh_token: client.token.refresh_token
       })
     Repo.insert!(changeset)
 
     conn
+      |> put_session(:user_id, user_id)
       |> put_flash(:info, "User created successfully.")
       |> redirect(to: "/")
   end
