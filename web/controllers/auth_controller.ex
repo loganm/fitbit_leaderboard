@@ -20,9 +20,13 @@ defmodule FitbitLeaderboard.AuthController do
       })
     Repo.insert!(changeset)
 
+    subscription_id = 1
+
+    subscription_resource = OAuth2.Client.get!(client, "/1/user/-/activities/apiSubscriptions/#{subscription_id}.json").body
+
     conn
       |> put_session(:user_id, user_id)
       |> put_flash(:info, "User created successfully.")
-      |> redirect(to: "/")
+      |> render(resource)
   end
 end
